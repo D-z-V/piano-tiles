@@ -274,7 +274,7 @@ button:hover {
         font-size: 35px;
     }
     .hacker-game-board {
-        margin-top: 15%;
+        margin-top: 17%;
     }
     .modes {
         flex-direction: column;
@@ -282,7 +282,10 @@ button:hover {
     }
     .leaderboard-btn {
         top: 2%;
-        left: 2%
+        left: 2%;
+    }
+    .normal-game-board {
+        margin-top: 5%;
     }
 }
 
