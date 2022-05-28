@@ -124,6 +124,8 @@ hacker.addEventListener('click', function (e) {
                 start.style.display = 'none'
                 score.style.display = 'block'
                 score.innerHTML = 'Score: ' + level;
+                timer.style.display = 'block'
+                countDown(60, 1, timer);
                 nextSequence();
                 started = true;
                 hackergameboard.onclick = function (e) {
@@ -138,7 +140,6 @@ hacker.addEventListener('click', function (e) {
                 playSound('correct')
                 if (userClickedPattern.length === gamePattern.length){
                     if (level>0) {
-                        timer.style.display = 'block'
                         score.innerHTML = 'Score: ' + (level);
                     }
                     nextSequence();
@@ -147,15 +148,15 @@ hacker.addEventListener('click', function (e) {
             else {
                 playSound('wrong')
                 console.log('game over');
-                score.innerHTML = 'Game Over! Your Score is ' + (level-1);
-                localScoreList.push(level-1);
+                var time = parseInt(timer.innerHTML.split(': ').pop());
+                score.innerHTML = 'Game Over! Your Score is ' + (((level-1)*10) + time);
+                localScoreList.push(((level-1)*10) + time);
                 localScoreList.sort();
                 localScoreList.reverse();
                 console.log(localScoreList);
                 for (let i = 0; i < localScoreList.length; i++) {
                     localStorage.setItem('scoreList', JSON.stringify(localScoreList));
                 }
-                console.log(JSON.parse(localStorage.scoreList).length);
                 localScoreList = JSON.parse(localStorage.scoreList)
                 for (let i = 0; i < localScoreList.length; i++) {
                     positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
@@ -189,7 +190,21 @@ hacker.addEventListener('click', function (e) {
             var audio = new Audio("./assets/" + name + ".mp3");
             audio.play();
         }
-
+        
+        function countDown(seconds, status, element) {
+            if (status == 1) {
+                setInterval(function () {
+                    seconds--;
+                    element.innerHTML = 'Time : ' + seconds;
+                    if (seconds == 0) {
+                        return seconds;
+                    }
+                }, 1000);
+            }
+            else {
+                element.style.display = 'none';
+            }
+        }
         
     leaderboardbtn.onclick = function () { 
         custommodel.classList.add('model-open')
