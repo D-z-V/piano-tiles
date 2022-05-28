@@ -70,7 +70,7 @@ function normalmode() {
             } 
             else {
                 setTimeout(function () {
-                    score.innerHTML = 'Game Over! Your Score is ' + (level);
+                    score.innerHTML = 'Game Over! Your Score is ' + (level-1);
                 }, 200);
                 normalmode();
             }
