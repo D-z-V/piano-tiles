@@ -1,3 +1,4 @@
+localstorage.clear();
 const normal = document.getElementById('normal')
 const hacker = document.getElementById('hacker')
 const hackerpp = document.getElementById('hackerpp')
