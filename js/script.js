@@ -1,4 +1,3 @@
-localstorage.clear();
 const normal = document.getElementById('normal')
 const hacker = document.getElementById('hacker')
 const hackerpp = document.getElementById('hackerpp')
@@ -123,7 +122,7 @@ hacker.addEventListener('click', function (e) {
         let userClickedPattern = [];
         if (localStorage.length > 0) {
             var localScoreList = JSON.parse(localStorage.scoreList)
-            for (let i = 0; i < localScoreList.length; i++) {
+            for (let i = 0; i < 5; i++) {
                 positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
             }
         }
@@ -140,7 +139,6 @@ hacker.addEventListener('click', function (e) {
                 hackergameboard.onclick = function (e) {
                     var userChosenColour = e.target.id;
                     userChosenNum = parseInt(userChosenColour.split('-').pop());
-                    console.log(userChosenNum);
                     userClickedPattern.push(userChosenNum);
                     checkAnswer(userClickedPattern.length - 1);
                 };
@@ -164,16 +162,13 @@ hacker.addEventListener('click', function (e) {
                 localScoreList.push(level-1);
                 localScoreList.sort();
                 localScoreList.reverse();
-                console.log(localScoreList);
                 for (let i = 0; i < localScoreList.length; i++) {
                     localStorage.setItem('scoreList', JSON.stringify(localScoreList));
                 }
-                console.log(JSON.parse(localStorage.scoreList).length);
                 localScoreList = JSON.parse(localStorage.scoreList)
-                for (let i = 0; i < localScoreList.length; i++) {
+                for (let i = 0; i < 5; i++) {
                     positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
                 }
-                console.log(localScoreList);
                 leaderboardbtn.click();
                 timer.style.display = 'none'
                 start.style.display = 'flex'
@@ -206,7 +201,6 @@ hacker.addEventListener('click', function (e) {
             var interval = setInterval( () => {
                 if (i < gamePattern.length) {
                     var tile = document.getElementById('hacker-' + gamePattern[i]);
-                    console.log(tile);
                     tile.style.backgroundColor = '#fff';
                     setTimeout(function () {
                         tile.style.backgroundColor = '#000';
