@@ -70,7 +70,7 @@ function normalmode() {
             } 
             else {
                 setTimeout(function () {
-                    score.innerHTML = 'Game Over! Your Score is ' + (level-1);
+                    score.innerHTML = 'Game Over! Your Score is ' + (level);
                 }, 200);
                 normalmode();
             }
@@ -88,10 +88,20 @@ function normalmode() {
         level++;
         var randomNumber = Math.floor(Math.random() * 16);
         gamePattern.push(randomNumber);
-        normalgrid[randomNumber].style.backgroundColor = '#FFF'
-        setTimeout(function () {
-            normalgrid[randomNumber].style.backgroundColor = '#000'
-        }, 1000);
+        var i = 0;
+        var interval = setInterval(function () {
+            if (i < gamePattern.length) {
+                var tile = document.getElementById(gamePattern[i]);
+                tile.style.backgroundColor = '#fff';
+                setTimeout(function () {
+                    tile.style.backgroundColor = '#000';
+                }, 400);
+                i++;
+            }
+            else {
+                clearInterval(interval);
+            }
+        }, 450);
     }
 }
 
@@ -124,13 +134,13 @@ hacker.addEventListener('click', function (e) {
                 start.style.display = 'none'
                 score.style.display = 'block'
                 score.innerHTML = 'Score: ' + level;
-                timer.style.display = 'block'
-                countDown(60, 1, timer);
                 nextSequence();
                 started = true;
                 hackergameboard.onclick = function (e) {
                     var userChosenColour = e.target.id;
-                    userClickedPattern.push(userChosenColour);
+                    userChosenNum = parseInt(userChosenColour.split('-').pop());
+                    console.log(userChosenNum);
+                    userClickedPattern.push(userChosenNum);
                     checkAnswer(userClickedPattern.length - 1);
                 };
             };
@@ -140,6 +150,7 @@ hacker.addEventListener('click', function (e) {
                 playSound('correct')
                 if (userClickedPattern.length === gamePattern.length){
                     if (level>0) {
+                        timer.style.display = 'block'
                         score.innerHTML = 'Score: ' + (level);
                     }
                     nextSequence();
@@ -148,15 +159,15 @@ hacker.addEventListener('click', function (e) {
             else {
                 playSound('wrong')
                 console.log('game over');
-                var time = parseInt(timer.innerHTML.split(': ').pop());
-                score.innerHTML = 'Game Over! Your Score is ' + (((level-1)*10) + time);
-                localScoreList.push(((level-1)*10) + time);
+                score.innerHTML = 'Game Over! Your Score is ' + (level-1);
+                localScoreList.push(level-1);
                 localScoreList.sort();
                 localScoreList.reverse();
                 console.log(localScoreList);
                 for (let i = 0; i < localScoreList.length; i++) {
                     localStorage.setItem('scoreList', JSON.stringify(localScoreList));
                 }
+                console.log(JSON.parse(localStorage.scoreList).length);
                 localScoreList = JSON.parse(localStorage.scoreList)
                 for (let i = 0; i < localScoreList.length; i++) {
                     positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
@@ -180,31 +191,32 @@ hacker.addEventListener('click', function (e) {
             level++;
             var randomNumber = Math.floor(Math.random() * 36);
             gamePattern.push(randomNumber);
-            hackergrid[randomNumber].style.backgroundColor = '#FFF'
-            setTimeout(function () {
-                hackergrid[randomNumber].style.backgroundColor = '#000'
-            }, 1000);
+            blink(gamePattern);
         }
     
         function playSound(name) {
             var audio = new Audio("./assets/" + name + ".mp3");
             audio.play();
         }
-        
-        function countDown(seconds, status, element) {
-            if (status == 1) {
-                setInterval(function () {
-                    seconds--;
-                    element.innerHTML = 'Time : ' + seconds;
-                    if (seconds == 0) {
-                        return seconds;
-                    }
-                }, 1000);
-            }
-            else {
-                element.style.display = 'none';
-            }
+
+        function blink(gamePattern) {
+            var i = 0;
+            var interval = setInterval( () => {
+                if (i < gamePattern.length) {
+                    var tile = document.getElementById('hacker-' + gamePattern[i]);
+                    console.log(tile);
+                    tile.style.backgroundColor = '#fff';
+                    setTimeout(function () {
+                        tile.style.backgroundColor = '#000';
+                    }, 400);
+                    i++;
+                }
+                else {
+                    clearInterval(interval);
+                }
+            }, 500);
         }
+
         
     leaderboardbtn.onclick = function () { 
         custommodel.classList.add('model-open')
@@ -253,4 +265,5 @@ function menu() {
     start.style.display = 'none'
     score.style.display = 'none'
     start.innerHTML = 'Start'
+    timer.style.display = 'none'
 }
