@@ -20,90 +20,104 @@ const score = document.getElementById('score')
 
 const custommodel = document.getElementById('custom-model-main')
 const positions = document.getElementsByClassName('ld')
-const timer = document.getElementById('timer')
+const timerElm = document.getElementById('timer')
+var timer;
+var timeLeft = 60;
+
 
 normal.addEventListener('click', function (e) {
     normalmode()
-    backbtn.addEventListener('click', function (e1) {
-        menu()
-    });
-});
-
-
-function normalmode() {
-    normal.style.display = 'none'
-    hacker.style.display = 'none'
-    hackerpp.style.display = 'none'
-    title.innerHTML = 'Normal Mode'
-    title.style.fontFamily = 'Amatic SC';
-    backbtn.style.display = 'block'
-    normalgameboard.style.display = 'flex'
-    start.style.display = 'flex'
-    let started = false;
-    let userClicked = [];
-    let gamePattern = [];
-    let level = 0
-    start.onclick = function (e) {
-        start.style.display = 'none'
-        score.style.display = 'block'
-        score.innerHTML = 'Score: 0'
-        if (!started) {
-            nextSequence();
-            started = true;
-        }
-        normalgameboard.onclick = function (e) {
-            var userChosen = e.target.id;
-            userClicked.push(userChosen);
-            checkNormal(userClicked.length - 1);
+    function normalmode() {
+        normal.style.display = 'none'
+        hacker.style.display = 'none'
+        hackerpp.style.display = 'none'
+        title.innerHTML = 'Normal Mode'
+        title.style.fontFamily = 'Amatic SC';
+        backbtn.style.display = 'block'
+        normalgameboard.style.display = 'flex'
+        start.style.display = 'flex'
+        let started = false;
+        let userClicked = [];
+        let gamePattern = [];
+        let level = 0
+        start.onclick = function (e) {
+            start.style.display = 'none'
+            score.style.display = 'block'
+            score.innerHTML = 'Score: 0'
+            if (!started) {
+                nextSequence();
+                started = true;
+            }
+            normalgameboard.onclick = function (e) {
+                var userChosen = e.target.id;
+                userClicked.push(userChosen);
+                checkNormal(userClicked.length - 1);
+            };
         };
-    };
-
-    function checkNormal(currentLevel) {
-        if (userClicked.some(r=> gamePattern.includes(r)) || (gamePattern.length == userClicked.length)) {
-            if (gamePattern.sort().join(',') === userClicked.sort().join(',')) {
-                    if (level>0) {
-                        score.innerHTML = 'Score: ' + (level);
-                    }
+    
+        function checkNormal(currentLevel) {
+            if (userClicked.some(r=> gamePattern.includes(r)) || (gamePattern.length == userClicked.length)) {
+                if (gamePattern.sort().join(',') === userClicked.sort().join(',')) {
+                        if (level>0) {
+                            score.innerHTML = 'Score: ' + (level);
+                        }
+                        setTimeout(function () {
+                            nextSequence();
+                        }, 1000);
+                } 
+                else {
                     setTimeout(function () {
-                        nextSequence();
-                    }, 1000);
-            } 
-            else {
+                        score.innerHTML = 'Game Over! Your Score is ' + (level-1);
+                    }, 200);
+                    normalmode();
+                }
+            }
+            else if (userClicked.length > gamePattern.length) {
                 setTimeout(function () {
-                    score.innerHTML = 'Game Over! Your Score is ' + (level);
+                    score.innerHTML = 'Game Over! Your Score is ' + (level-1);
                 }, 200);
                 normalmode();
             }
         }
-        else if (userClicked.length > gamePattern.length) {
-            setTimeout(function () {
-                score.innerHTML = 'Game Over! Your Score is ' + (level-1);
-            }, 200);
-            normalmode();
+    
+        function nextSequence() {
+            userClicked = [];
+            level++;
+            var randomNumber = Math.floor(Math.random() * 16);
+            gamePattern.push(randomNumber);
+            var i = 0;
+            var interval = setInterval(function () {
+                if (i < gamePattern.length) {
+                    var tile = document.getElementById(gamePattern[i]);
+                    tile.style.backgroundColor = '#fff';
+                    setTimeout(function () {
+                        tile.style.backgroundColor = '#000';
+                    }, 400);
+                    i++;
+                }
+                else {
+                    clearInterval(interval);
+                }
+            }, 450);
         }
     }
+    backbtn.addEventListener('click', function (e1) {
+            normal.style.display = 'block'
+            hacker.style.display = 'block'
+            hackerpp.style.display = 'block'
+            backbtn.style.display = 'none'
+            leaderboardbtn.style.display = 'none'
+            title.innerHTML = 'Piano Tiles'
+            title.style.fontFamily = 'Pacifico';
+            hackergameboard.style.display = 'none'
+            normalgameboard.style.display = 'none'
+            start.style.display = 'none'
+            score.style.display = 'none'
+            start.innerHTML = 'Start'
+            timerElm.style.display = 'none'
+    });
+});
 
-    function nextSequence() {
-        userClicked = [];
-        level++;
-        var randomNumber = Math.floor(Math.random() * 16);
-        gamePattern.push(randomNumber);
-        var i = 0;
-        var interval = setInterval(function () {
-            if (i < gamePattern.length) {
-                var tile = document.getElementById(gamePattern[i]);
-                tile.style.backgroundColor = '#fff';
-                setTimeout(function () {
-                    tile.style.backgroundColor = '#000';
-                }, 400);
-                i++;
-            }
-            else {
-                clearInterval(interval);
-            }
-        }, 450);
-    }
-}
 
 hacker.addEventListener('click', function (e) {
         normal.style.display = 'none'
@@ -132,7 +146,9 @@ hacker.addEventListener('click', function (e) {
         if (!started) {
             start.onclick = function (e) {
                 start.style.display = 'none'
+                timerElm.style.display = 'block'
                 score.style.display = 'block'
+                startTimer();
                 score.innerHTML = 'Score: ' + level;
                 nextSequence();
                 started = true;
@@ -149,8 +165,7 @@ hacker.addEventListener('click', function (e) {
                 playSound('correct')
                 if (userClickedPattern.length === gamePattern.length){
                     if (level>0) {
-                        timer.style.display = 'block'
-                        score.innerHTML = 'Score: ' + (level);
+                        score.innerHTML = 'Score: ' + ((level-1)*10 + (timeLeft));
                     }
                     nextSequence();
                 }
@@ -158,10 +173,11 @@ hacker.addEventListener('click', function (e) {
             else {
                 playSound('wrong')
                 console.log('game over');
-                score.innerHTML = 'Game Over! Your Score is ' + (level-1);
-                localScoreList.push(level-1);
+                score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
+                localScoreList.push(((level-1)*10 + (timeLeft)));
                 localScoreList.sort();
                 localScoreList.reverse();
+                cancelTimer();
                 for (let i = 0; i < localScoreList.length; i++) {
                     localStorage.setItem('scoreList', JSON.stringify(localScoreList));
                 }
@@ -170,48 +186,95 @@ hacker.addEventListener('click', function (e) {
                     positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
                 }
                 leaderboardbtn.click();
-                timer.style.display = 'none'
+                timerElm.style.display = 'none'
                 start.style.display = 'flex'
                 startOver();
             }
     
-            function startOver() {
-                level = 0;
-                userClickedPattern = [];
-                gamePattern = [];
-                started = false;
-            }
-        }
-    
-        function nextSequence() {
+        function startOver() {
+            cancelTimer();
+            timeLeft = 60;
+            level = 0;
             userClickedPattern = [];
-            level++;
-            var randomNumber = Math.floor(Math.random() * 36);
-            gamePattern.push(randomNumber);
-            blink(gamePattern);
-        }
-    
-        function playSound(name) {
-            var audio = new Audio("./assets/" + name + ".mp3");
-            audio.play();
+            gamePattern = [];
+            started = false;
         }
 
-        function blink(gamePattern) {
-            var i = 0;
-            var interval = setInterval( () => {
-                if (i < gamePattern.length) {
-                    var tile = document.getElementById('hacker-' + gamePattern[i]);
-                    tile.style.backgroundColor = '#fff';
-                    setTimeout(function () {
-                        tile.style.backgroundColor = '#000';
-                    }, 400);
-                    i++;
-                }
-                else {
-                    clearInterval(interval);
-                }
-            }, 500);
+    }
+   
+    function updateTimer() {
+        timeLeft = timeLeft - 1;
+        if(timeLeft >= 0)
+            timerElm.innerHTML = 'Time left : ' + timeLeft;
+        else {
+            playSound('wrong')
+            console.log('game over');
+            score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
+            localScoreList.push(((level-1)*10 + (timeLeft)));
+            localScoreList.sort();
+            localScoreList.reverse();
+            cancelTimer();
+            for (let i = 0; i < localScoreList.length; i++) {
+                localStorage.setItem('scoreList', JSON.stringify(localScoreList));
+            }
+            localScoreList = JSON.parse(localStorage.scoreList)
+            for (let i = 0; i < 5; i++) {
+                positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
+            }
+            leaderboardbtn.click();
+            timerElm.style.display = 'none'
+            start.style.display = 'flex'
+            startOver();
         }
+    }
+    
+    function startTimer() {
+        timer = setInterval(updateTimer, 1000);
+        updateTimer();
+    }
+
+    function cancelTimer() {
+        clearInterval(timer);
+    }
+
+    function startOver() {
+        cancelTimer();
+        timeLeft = 60;
+        level = 0;
+        userClickedPattern = [];
+        gamePattern = [];
+        started = false;
+    }
+    
+    function nextSequence() {
+        userClickedPattern = [];
+        level++;
+        var randomNumber = Math.floor(Math.random() * 36);
+        gamePattern.push(randomNumber);
+        blink(gamePattern);
+    }
+
+    function playSound(name) {
+        var audio = new Audio("./assets/" + name + ".mp3");
+        audio.play();
+    }
+
+    function blink(gamePattern) {
+        var i = 0;
+        var interval = setInterval( () => {
+            if (i < gamePattern.length) {
+                var tile = document.getElementById('hacker-' + gamePattern[i]);
+                tile.style.backgroundColor = '#fff';
+                setTimeout(function () {
+                    tile.style.backgroundColor = '#000';
+                }, 400);
+                i++;
+            }
+            else {
+                clearInterval(interval);
+            }
+        }, 550);
+    }
 
         
     leaderboardbtn.onclick = function () { 
@@ -227,39 +290,45 @@ hacker.addEventListener('click', function (e) {
     }
 
     backbtn.addEventListener('click', function (e1) {
-        menu()
+            normal.style.display = 'block'
+            hacker.style.display = 'block'
+            hackerpp.style.display = 'block'
+            backbtn.style.display = 'none'
+            leaderboardbtn.style.display = 'none'
+            title.innerHTML = 'Piano Tiles'
+            title.style.fontFamily = 'Pacifico';
+            hackergameboard.style.display = 'none'
+            normalgameboard.style.display = 'none'
+            start.style.display = 'none'
+            score.style.display = 'none'
+            start.innerHTML = 'Start'
+            timerElm.style.display = 'none'
+            cancelTimer();
+            startOver();
     });
 });
 
 hackerpp.addEventListener('click', function (e) {
-    hackerppmode()
-    backbtn.addEventListener('click', function (e1) {
-        menu()
-    });
-});
-
-
-function hackerppmode() {
     normal.style.display = 'none'
     hacker.style.display = 'none'
     hackerpp.style.display = 'none'
     title.innerHTML = 'Hacker Mode ++'
     title.style.fontFamily = 'Amatic SC';
     backbtn.style.display = 'block'
-}
 
-function menu() {
-    normal.style.display = 'block'
-    hacker.style.display = 'block'
-    hackerpp.style.display = 'block'
-    backbtn.style.display = 'none'
-    leaderboardbtn.style.display = 'none'
-    title.innerHTML = 'Piano Tiles'
-    title.style.fontFamily = 'Pacifico';
-    hackergameboard.style.display = 'none'
-    normalgameboard.style.display = 'none'
-    start.style.display = 'none'
-    score.style.display = 'none'
-    start.innerHTML = 'Start'
-    timer.style.display = 'none'
-}
+    backbtn.addEventListener('click', function (e1) {
+        normal.style.display = 'block'
+        hacker.style.display = 'block'
+        hackerpp.style.display = 'block'
+        backbtn.style.display = 'none'
+        leaderboardbtn.style.display = 'none'
+        title.innerHTML = 'Piano Tiles'
+        title.style.fontFamily = 'Pacifico';
+        hackergameboard.style.display = 'none'
+        normalgameboard.style.display = 'none'
+        start.style.display = 'none'
+        score.style.display = 'none'
+        start.innerHTML = 'Start'
+        timerElm.style.display = 'none'
+    });
+});
