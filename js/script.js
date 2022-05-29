@@ -172,6 +172,7 @@ hacker.addEventListener('click', function (e) {
                 for (let i = 0; i < localScoreList.length; i++) {
                     positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
                 }
+                console.log(localScoreList);
                 leaderboardbtn.click();
                 timer.style.display = 'none'
                 start.style.display = 'flex'
