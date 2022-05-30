@@ -149,6 +149,8 @@ hacker.addEventListener('click', function (e) {
         }
         if (!started) {
             start.onclick = function (e) {
+                title.style.fontSize = '44px'
+                score.style.fontSize = '27px'
                 start.style.display = 'none'
                 timerElm.style.display = 'block'
                 score.style.display = 'block'
@@ -425,6 +427,8 @@ hackerpp.addEventListener('click', function (e) {
     }
 
     backbtn.addEventListener('click', function (e1) {
+        title.style.fontSize = '50px'
+        score.style.fontSize = '30px'
         normal.style.display = 'block'
         hacker.style.display = 'block'
         hackerpp.style.display = 'block'
