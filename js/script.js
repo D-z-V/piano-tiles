@@ -14,6 +14,9 @@ const normalgrid = document.getElementsByClassName('normal-col')
 const hackergameboard = document.getElementById('hacker-game-board')
 const hackergrid = document.getElementsByClassName('hacker-col')
 
+const hackerppgameboard = document.getElementById('hackerpp-game-board')
+const hackerppgrid = document.getElementsByClassName('hackerpp-col')
+
 const start = document.getElementById('start-btn-normal')
 
 const score = document.getElementById('score')
@@ -92,13 +95,13 @@ normal.addEventListener('click', function (e) {
                     tile.style.backgroundColor = '#fff';
                     setTimeout(function () {
                         tile.style.backgroundColor = '#000';
-                    }, 400);
+                    }, 300);
                     i++;
                 }
                 else {
                     clearInterval(interval);
                 }
-            }, 450);
+            }, 400);
         }
     }
     backbtn.addEventListener('click', function (e1) {
@@ -115,6 +118,7 @@ normal.addEventListener('click', function (e) {
             score.style.display = 'none'
             start.innerHTML = 'Start'
             timerElm.style.display = 'none'
+            hackerppgameboard.style.display = 'none'
     });
 });
 
@@ -172,7 +176,6 @@ hacker.addEventListener('click', function (e) {
             } 
             else {
                 playSound('wrong')
-                console.log('game over');
                 score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
                 localScoreList.push(((level-1)*10 + (timeLeft)));
                 localScoreList.sort();
@@ -208,7 +211,6 @@ hacker.addEventListener('click', function (e) {
             timerElm.innerHTML = 'Time left : ' + timeLeft;
         else {
             playSound('wrong')
-            console.log('game over');
             score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
             localScoreList.push(((level-1)*10 + (timeLeft)));
             localScoreList.sort();
@@ -303,18 +305,124 @@ hacker.addEventListener('click', function (e) {
             score.style.display = 'none'
             start.innerHTML = 'Start'
             timerElm.style.display = 'none'
+            hackerppgameboard.style.display = 'none'
             cancelTimer();
             startOver();
     });
 });
 
+var player1 = 1;
+var player2 = 2;
+
 hackerpp.addEventListener('click', function (e) {
     normal.style.display = 'none'
     hacker.style.display = 'none'
     hackerpp.style.display = 'none'
-    title.innerHTML = 'Hacker Mode ++'
+    title.innerHTML = 'Hacker Mode++'
     title.style.fontFamily = 'Amatic SC';
     backbtn.style.display = 'block'
+    hackerppgameboard.style.display = 'flex'
+    var level = 0;
+    var i = 0;
+    var levelLen = 1;
+    let playerSetPattern = [];
+    let playerClickedPattern = [];
+    runhpp();
+    function runhpp() {
+        playerSetPattern = [];
+        playerClickedPattern = [];
+        start.style.display = 'flex'
+        level = 0
+        i = 0
+        levelLen = 1
+        start.onclick = function () {
+            score.innerHTML = 'Player-' + player1 + ' Set Pattern for Player-' + player2;
+            score.style.display = 'flex';
+            start.innerHTML = 'Set';
+            hackerppgameboard.onclick = function (e) {
+                var userChosenColour = e.target.id;
+                userChosenNum = parseInt(userChosenColour.split('-').pop());
+                playerSetPattern.push(userChosenNum);
+                blinkSet(e.target.id)
+                start.onclick = function () { 
+                    score.innerHTML = "Player-" + (player2) + "'s Turn. Click Start.";
+                    start.innerHTML = 'Start';
+                    start.onclick = function () {
+                        start.style.display = 'none'
+                        nextSequence()
+                        hackerppgameboard.onclick = function(e) {
+                            var userClicked = e.target.id
+                            userClicked = parseInt(userClicked.split('-').pop());
+                            playerClickedPattern.push(userClicked)
+                            checkAnswer(playerClickedPattern.length-1)
+                        }
+                    }
+                }
+            }     
+        }
+    }
+    function blinkSet(tileNum) {
+        var tile = document.getElementById(tileNum);
+        tile.style.backgroundColor = '#fff';
+        setTimeout(function () {
+            tile.style.backgroundColor = '#000';
+        }, 200);
+    }
+
+    function nextSequence() {
+        levelLen = playerSetPattern.slice(0, playerClickedPattern.length+1).length
+        blink(playerSetPattern.slice(0, playerClickedPattern.length+1))
+        playerClickedPattern = [];
+        level++;
+    }
+
+    function checkAnswer(currentLevel) {
+        if (playerSetPattern.length == playerClickedPattern.length) {
+            score.innerHTML = 'Score: ' + (level);
+            start.style.display = 'block'
+            var temp = player1;
+            player1 = player2;
+            player2 = temp;
+            score.innerHTML = 'Player-' + player2 + ' Score : ' + (level);
+            start.innerHTML = 'Player ' + player2 + ' Set';
+            runhpp();
+        }
+        else if (playerSetPattern[i] === Number(playerClickedPattern[currentLevel])) {
+            if (playerSetPattern.slice(0, levelLen).length == playerClickedPattern.length) {
+                if (level>0) {
+                    score.innerHTML = 'Score: ' + (level);
+                }
+                i = 0;
+                nextSequence();
+            }
+            else {
+                i++;
+            }
+        }
+
+        else {
+            score.innerHTML = "Game Over!" + " Player-" + player1 + " Wins!";
+            runhpp();
+        }
+    }
+
+
+    function blink(gamePattern) {
+        var i = 0;
+        var interval = setInterval( () => {
+            if (i < gamePattern.length) {
+                var tile = document.getElementById('hackerpp-' + gamePattern[i]);
+                tile.style.backgroundColor = '#fff';
+                setTimeout(function () {
+                    tile.style.backgroundColor = '#000';
+                }, 400);
+                i++;
+            }
+            else {
+                clearInterval(interval);
+            }
+        }, 550);
+    }
 
     backbtn.addEventListener('click', function (e1) {
         normal.style.display = 'block'
@@ -330,5 +438,6 @@ hackerpp.addEventListener('click', function (e) {
         score.style.display = 'none'
         start.innerHTML = 'Start'
         timerElm.style.display = 'none'
+        hackerppgameboard.style.display = 'none'
     });
 });
