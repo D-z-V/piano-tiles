@@ -43,7 +43,7 @@ normal.addEventListener('click', function (e) {
         start.onclick = function (e) {
             start.style.display = 'none'
             score.style.display = 'block'
-            score.innerHTML = 'Score: 0'
+            score.innerHTML = 'Level : 0'
             if (!started) {
                 nextSequence();
                 started = true;
@@ -59,7 +59,7 @@ normal.addEventListener('click', function (e) {
             if (userClicked.some(r=> gamePattern.includes(r)) || (gamePattern.length == userClicked.length)) {
                 if (gamePattern.sort().join(',') === userClicked.sort().join(',')) {
                         if (level>0) {
-                            score.innerHTML = 'Score: ' + (level);
+                            score.innerHTML = 'Level : ' + (level);
                         }
                         setTimeout(function () {
                             nextSequence();
