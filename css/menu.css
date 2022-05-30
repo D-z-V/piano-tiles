@@ -163,9 +163,29 @@ button:hover {
     margin-top: 2%;
     display: none;
 }
+
+.hackerpp-game-board {
+    margin-top: 15px;
+    display: none;
+    justify-content:1 center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.hackerpp-col {
+    height: 60px;
+    width: 60px;
+    border: 2px solid rgb(38, 43, 43);
+    border-radius: 10px;
+    background-color: #000;
+    cursor: pointer;
+}
  
 @media screen and (max-width: 1300px) and (min-width: 800px)  {
     .hacker-game-board {
+        margin-top: 10%;
+    }
+    .hackerpp-game-board {
         margin-top: 10%;
     }
     .normal-game-board {
@@ -213,6 +233,16 @@ button:hover {
     .hacker-game-board {
         margin-top: 13%;
     }
+    .hackerpp-game-board {
+        margin-top: 13%;
+    }
+    .hackerpp-col {
+        height: 60px;
+        width: 60px;
+        border: 1px solid rgb(38, 43, 43);
+        border-radius: 10px;
+        background-color: #000;
+    }
     .hacker-col {
         height: 60px;
         width: 60px;
@@ -232,8 +262,8 @@ button:hover {
         left: 50%
     }
     .score {
-        margin-top: 22%;
-        font-size: 35px;
+        margin-top: 27%;
+        font-size: 30px;
     }
     .modes {
         flex-direction: column;
@@ -253,9 +283,26 @@ button:hover {
     .hacker-game-board {
         margin-top: 10%;
     }
+    .hackerpp-game-board {
+        margin-top: 10%;
+    }
     .hacker-col {
         height: 54px;
         width: 54px;
+        border: 1px solid rgb(38, 43, 43);
+        border-radius: 10px;
+        background-color: #000;
+    }
+    .hackerpp-col {
+        height: 54px;
+        width: 54px;
+        border: 1px solid rgb(38, 43, 43);
+        border-radius: 10px;
+        background-color: #000;
+    }
+    .hacker-col {
+        height: 60px;
+        width: 60px;
         border: 1px solid rgb(38, 43, 43);
         border-radius: 10px;
         background-color: #000;
@@ -282,10 +329,13 @@ button:hover {
         left: 50%
     }
     .score {
-        margin-top: 22%;;
-        font-size: 35px;
+        margin-top: 27%;;
+        font-size: 30px;
     }
     .hacker-game-board {
+        margin-top: 17%;
+    }
+    .hackerpp-game-board {
         margin-top: 17%;
     }
     .modes {
