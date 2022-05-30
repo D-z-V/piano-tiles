@@ -177,6 +177,9 @@ button:hover {
     .back-btn {
         left: 85%
     }
+    .timer {
+        margin-top: 3%;
+    }
 }
 
 @media screen and (max-width: 800px) and (min-width: 600px) {
@@ -216,6 +219,9 @@ button:hover {
         border: 1px solid rgb(38, 43, 43);
         border-radius: 10px;
         background-color: #000;
+    }
+    .timer {
+        margin-top: 4%;
     }
 }
 
@@ -264,6 +270,9 @@ button:hover {
     .normal-game-board {
         margin-top: 5%;
     }
+    .timer {
+        margin-top: 5%;
+    }
 }
 
 @media screen and (max-width: 400px) {
@@ -288,6 +297,9 @@ button:hover {
         left: 2%;
     }
     .normal-game-board {
+        margin-top: 5%;
+    }
+    .timer {
         margin-top: 5%;
     }
 }
