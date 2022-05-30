@@ -234,7 +234,7 @@ button:hover {
         margin-top: 13%;
     }
     .hackerpp-game-board {
-        margin-top: 13%;
+        margin-top: 14%;
     }
     .hackerpp-col {
         height: 60px;
@@ -284,7 +284,7 @@ button:hover {
         margin-top: 10%;
     }
     .hackerpp-game-board {
-        margin-top: 10%;
+        margin-top: 12%;
     }
     .hacker-col {
         height: 54px;
@@ -336,7 +336,7 @@ button:hover {
         margin-top: 17%;
     }
     .hackerpp-game-board {
-        margin-top: 17%;
+        margin-top: 19%;
     }
     .modes {
         flex-direction: column;
