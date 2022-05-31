@@ -170,15 +170,15 @@ hacker.addEventListener('click', function (e) {
                 playSound('correct')
                 if (userClickedPattern.length === gamePattern.length){
                     if (level>0) {
-                        score.innerHTML = 'Score: ' + ((level-1)*10 + (timeLeft));
+                        score.innerHTML = 'Score: ' + ((level-1)*20 + (timeLeft));
                     }
                     nextSequence();
                 }
             } 
             else {
                 playSound('wrong')
-                score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
-                localScoreList.push(((level-1)*10 + (timeLeft)));
+                score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*20 + (timeLeft));
+                localScoreList.push(((level-1)*20 + (timeLeft)));
                 localScoreList.sort();
                 localScoreList.reverse();
                 cancelTimer();
