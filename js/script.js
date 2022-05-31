@@ -149,7 +149,6 @@ hacker.addEventListener('click', function (e) {
         }
         if (!started) {
             start.onclick = function (e) {
-                title.style.fontSize = '44px'
                 start.style.display = 'none'
                 timerElm.style.display = 'block'
                 score.style.display = 'block'
@@ -170,15 +169,15 @@ hacker.addEventListener('click', function (e) {
                 playSound('correct')
                 if (userClickedPattern.length === gamePattern.length){
                     if (level>0) {
-                        score.innerHTML = 'Score: ' + ((level-1)*20 + (timeLeft));
+                        score.innerHTML = 'Score: ' + ((level-1)*10 + (timeLeft));
                     }
                     nextSequence();
                 }
             } 
             else {
                 playSound('wrong')
-                score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*20 + (timeLeft));
-                localScoreList.push(((level-1)*20 + (timeLeft)));
+                score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
+                localScoreList.push(((level-1)*10 + (timeLeft)));
                 localScoreList.sort();
                 localScoreList.reverse();
                 cancelTimer();
@@ -212,8 +211,8 @@ hacker.addEventListener('click', function (e) {
             timerElm.innerHTML = 'Time left : ' + timeLeft;
         else {
             playSound('wrong')
-            score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*20 + (timeLeft));
-            localScoreList.push(((level-1)*20 + (timeLeft)));
+            score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
+            localScoreList.push(((level-1)*10 + (timeLeft)));
             localScoreList.sort();
             localScoreList.reverse();
             cancelTimer();
@@ -222,12 +221,7 @@ hacker.addEventListener('click', function (e) {
             }
             localScoreList = JSON.parse(localStorage.scoreList)
             for (let i = 0; i < 5; i++) {
-                if (localScoreList[i] == undefined) {
-                    positions[i].innerHTML = (i+1) + '. ';
-                }
-                else {
-                    positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
-                }
+                positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
             }
             leaderboardbtn.click();
             timerElm.style.display = 'none'
