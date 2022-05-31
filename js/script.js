@@ -222,7 +222,12 @@ hacker.addEventListener('click', function (e) {
             }
             localScoreList = JSON.parse(localStorage.scoreList)
             for (let i = 0; i < 5; i++) {
-                positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
+                if (localScoreList[i] == undefined) {
+                    positions[i].innerHTML = (i+1) + '. ';
+                }
+                else {
+                    positions[i].innerHTML = (i+1) + '. ' + localScoreList[i];
+                }
             }
             leaderboardbtn.click();
             timerElm.style.display = 'none'
