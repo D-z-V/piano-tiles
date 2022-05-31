@@ -212,8 +212,8 @@ hacker.addEventListener('click', function (e) {
             timerElm.innerHTML = 'Time left : ' + timeLeft;
         else {
             playSound('wrong')
-            score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*10 + (timeLeft));
-            localScoreList.push(((level-1)*10 + (timeLeft)));
+            score.innerHTML = 'Game Over! Your Score is ' + ((level-1)*20 + (timeLeft));
+            localScoreList.push(((level-1)*20 + (timeLeft)));
             localScoreList.sort();
             localScoreList.reverse();
             cancelTimer();
